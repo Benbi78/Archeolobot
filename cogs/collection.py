@@ -11,14 +11,14 @@ import config
 
 
 class CollectionCog(commands.Cog):
-    """Commandes liées aux collections et classements."""
+    #Commandes liées aux collections et classements.
     
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.db = DatabaseManager()
     
     def _get_or_create_archaeologist(self, interaction: discord.Interaction):
-        """Récupère ou crée un archéologue."""
+        #Récupère ou crée un archéologue.
         archaeologist = self.db.get_archaeologist(interaction.user.id)
         
         if not archaeologist:
@@ -43,7 +43,7 @@ class CollectionCog(commands.Cog):
         artifact_name: str | None = None,
         max_rarity: app_commands.Choice[str] | None = None,
     ):
-        """Vendre un artefact par nom OU tous les artefacts jusqu'à une rareté."""
+        #Vendre un artefact par nom OU tous les artefacts jusqu'à une rareté.
         await interaction.response.defer()
 
         archaeologist = self._get_or_create_archaeologist(interaction)
@@ -109,7 +109,7 @@ class CollectionCog(commands.Cog):
     
     @app_commands.command(name="collection", description="Affiche vos artefacts découverts")
     async def collection(self, interaction: discord.Interaction):
-        """Affiche la collection d'artefacts de l'utilisateur."""
+        #Affiche la collection d'artefacts de l'utilisateur.
         await interaction.response.defer()
         
         archaeologist = self._get_or_create_archaeologist(interaction)
@@ -148,7 +148,7 @@ class CollectionCog(commands.Cog):
     
     @app_commands.command(name="leaderboard", description="Affiche le classement des archéologues")
     async def leaderboard(self, interaction: discord.Interaction):
-        """Affiche le leaderboard."""
+        #Affiche le leaderboard.
         await interaction.response.defer()
         
         leaderboard_data = self.db.get_leaderboard(limit=10)
@@ -187,5 +187,5 @@ class CollectionCog(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    """Charge le cog."""
+    #Charge le cog.
     await bot.add_cog(CollectionCog(bot))

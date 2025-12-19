@@ -15,14 +15,14 @@ from utils.helpers import (
 
 
 class ExcavationCog(commands.Cog):
-    """Commandes liées aux fouilles archéologiques."""
+    #Commandes liées aux fouilles archéologiques.
     
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.db = DatabaseManager()
     
     def _get_or_create_archaeologist(self, interaction: discord.Interaction):
-        """Récupère ou crée un archéologue."""
+        #Récupère ou crée un archéologue.
         archaeologist = self.db.get_archaeologist(interaction.user.id)
         
         if not archaeologist:
@@ -35,7 +35,7 @@ class ExcavationCog(commands.Cog):
     
     @app_commands.command(name="excavate", description="Commencez une fouille archéologique")
     async def excavate(self, interaction: discord.Interaction):
-        """Lance une fouille archéologique."""
+        #Lance une fouille archéologique.
         await interaction.response.defer()
         
         archaeologist = self._get_or_create_archaeologist(interaction)
@@ -88,5 +88,5 @@ class ExcavationCog(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    """Charge le cog."""
+    #Charge le cog.
     await bot.add_cog(ExcavationCog(bot))
