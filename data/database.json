@@ -3,11 +3,12 @@
     "758331904591396904": {
       "user_id": "758331904591396904",
       "username": "Benbi78",
-      "level": 9999,
-      "experience": 9999999999,
-      "coins": "infinity",
+      "level": 10029,
+      "experience": 10000001466,
+      "coins": 1010840,
       "artifacts": [],
-      "total_excavations": 6,
+      "total_excavations": 36,
+      "pickaxe": "diamond",
       "joined_at": "2025-12-19T10:07:27.001810"
     }
   },

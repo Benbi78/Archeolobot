@@ -40,8 +40,8 @@ class ExcavationCog(commands.Cog):
         
         archaeologist = self._get_or_create_archaeologist(interaction)
         
-        # Génère un artefact aléatoire
-        coins_reward, rarity = generate_excavation_reward()
+        # Génère un artefact aléatoire avec la pioche actuelle
+        coins_reward, rarity = generate_excavation_reward(archaeologist.pickaxe)
         artifact_name = get_random_artifact_name()
         artifact_desc = get_random_artifact_description()
         

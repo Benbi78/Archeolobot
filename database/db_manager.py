@@ -215,3 +215,37 @@ class DatabaseManager:
             (a.username, a.level, a.experience, a.coins, len(a.artifacts))
             for a in sorted_archaeologists[:limit]
         ]
+    
+    def get_pickaxe(self, user_id: str) -> str:
+        """Récupère la pioche actuelle de l'archéologue."""
+        archaeologist = self.get_archaeologist(user_id)
+        return archaeologist.pickaxe if archaeologist else "basic"
+    
+    def buy_pickaxe(self, user_id: str, pickaxe_type: str) -> tuple[bool, str]:
+        """Achète une pioche pour l'archéologue. Retourne (succès, message)."""
+        # Vérifier que la pioche existe
+        if pickaxe_type not in config.PICKAXES:
+            return False, f"⛏️ Pioche inconnue: {pickaxe_type}"
+        
+        pickaxe_info = config.PICKAXES[pickaxe_type]
+        cost = pickaxe_info["cost"]
+        
+        archaeologist = self.get_archaeologist(user_id)
+        if not archaeologist:
+            return False, "👤 Archéologue introuvable"
+        
+        # Vérifier si l'archéologue a déjà cette pioche
+        if archaeologist.pickaxe == pickaxe_type:
+            return False, f"⛏️ Vous possédez déjà la pioche {pickaxe_info['name']}!"
+        
+        # Vérifier les pièces
+        if archaeologist.coins < cost:
+            return False, f"🪙 Pièces insuffisantes. Vous en avez {archaeologist.coins}, il en faut {cost}."
+        
+        # Effectuer l'achat
+        archaeologist.coins -= cost
+        old_pickaxe = archaeologist.pickaxe
+        archaeologist.pickaxe = pickaxe_type
+        
+        self.save_archaeologist(archaeologist)
+        return True, f"Vous avez acheté la pioche **{pickaxe_info['name']}** (Coût: {cost} 🪙)\nAncienne pioche: {config.PICKAXES[old_pickaxe]['name']}"

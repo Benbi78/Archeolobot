@@ -50,11 +50,23 @@ def get_rarity_emoji(rarity: str) -> str:
     return emojis.get(rarity, "❓")
 
 
-def generate_excavation_reward() -> tuple[int, str]:
-    #Génère une récompense aléatoire pour une fouille.
+def generate_excavation_reward(pickaxe: str = "basic") -> tuple[int, str]:
+    #Génère une récompense aléatoire pour une fouille selon la pioche.
+    legendary_chance = config.PICKAXES.get(pickaxe, {}).get("legendary_chance", 0)
+    
+    # Si pioche basic, pas de légendaire
+    if pickaxe == "basic":
+        weights = [50, 25, 15, 10, 0]
+    else:
+        # Réduit les autres raretés pour augmenter les chances supérieures
+        base_weights = [50, 25, 15, 7, 3]
+        legendary_weight = legendary_chance
+        common_weight = max(0, base_weights[0] - (legendary_weight - 3))
+        weights = [common_weight, base_weights[1], base_weights[2], base_weights[3], legendary_weight]
+    
     rarity = random.choices(
         config.RARITY_LEVELS,
-        weights=[50, 25, 15, 7, 3],
+        weights=weights,
         k=1
     )[0]
     

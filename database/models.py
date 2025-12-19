@@ -38,6 +38,7 @@ class Archaeologist:
     coins: int = 0
     artifacts: list[str] = field(default_factory=list)
     total_excavations: int = 0
+    pickaxe: str = "basic"
     joined_at: str = field(default_factory=lambda: datetime.now().isoformat())
     
     def to_dict(self) -> dict:
