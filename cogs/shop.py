@@ -26,50 +26,17 @@ class ShopCog(commands.Cog):
         
         return archaeologist
     
-    @app_commands.command(name="shop", description="Consultez la boutique de pioches")
-    async def shop(self, interaction: discord.Interaction):
-        """Affiche les pioches disponibles à l'achat."""
-        await interaction.response.defer()
-        
-        archaeologist = self._get_or_create_archaeologist(interaction)
-        current_pickaxe = archaeologist.pickaxe
-        
-        # Crée une description des pioches
-        pickaxes_text = ""
-        for pickaxe_key, pickaxe_info in PICKAXES.items():
-            name = pickaxe_info["name"]
-            cost = pickaxe_info["cost"]
-            legendary_chance = pickaxe_info["legendary_chance"]
-            current_marker = " ✅ (Pioche actuelle)" if pickaxe_key == current_pickaxe else ""
-            
-            pickaxes_text += f"**{name}** ({pickaxe_key})\n"
-            pickaxes_text += f"  💰 Coût: {cost} 🪙\n"
-            pickaxes_text += f"  ⭐ Chance Légendaire: {legendary_chance}%\n"
-            pickaxes_text += f"  {current_marker}\n"
-        
-        embed = create_embed(
-            title="🛒 Boutique de Pioches",
-            description=pickaxes_text,
-            color=discord.Colour.from_rgb(218, 165, 32)
-        )
-        
-        embed.add_field(
-            name="💰 Votre Portefeuille",
-            value=f"{archaeologist.coins} 🪙",
-            inline=False
-        )
-        
-        embed.set_footer(text=f"Utilisez /buy_pickaxe <nom> pour acheter | Votre pioche: {PICKAXES[current_pickaxe]['name']}")
-        
-        await interaction.followup.send(embed=embed)
-    
-    @app_commands.command(name="buy_pickaxe", description="Achetez une pioche")
-    @app_commands.describe(pickaxe="Nom de la pioche à acheter (basic, bronze, silver, gold, diamond)")
-    async def buy_pickaxe(self, interaction: discord.Interaction, pickaxe: str):
+    @app_commands.command(name="shop", description="Achetez une pioche")
+    @app_commands.describe(pickaxe="Choisissez la pioche à acheter")
+    @app_commands.choices(pickaxe=[
+        app_commands.Choice(name=f"{info['name']} - {info['cost']} 🪙", value=key)
+        for key, info in PICKAXES.items()
+    ])
+    async def shop(self, interaction: discord.Interaction, pickaxe: str):
         """Achète une pioche à la boutique."""
         await interaction.response.defer()
         
-        # Convertir en minuscules pour la flexibilité
+        # Le pickaxe est déjà au bon format (key) grâce aux choices
         pickaxe = pickaxe.lower()
         
         success, message = self.db.buy_pickaxe(str(interaction.user.id), pickaxe)
