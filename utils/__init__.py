@@ -1,4 +1,4 @@
-"""Package des utilitaires."""
+#Package des utilitaires.
 
 from .helpers import (
     get_random_artifact_name,
