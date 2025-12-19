@@ -33,7 +33,7 @@ class ArcheoloBotClient(commands.Bot):
 
 
 async def main():
-    """Fonction principale."""
+    # Fonction principale.
     bot = ArcheoloBotClient()
     
     @bot.event
