@@ -1,8 +1,8 @@
 # Readme.MD
 
-lien du GitHub: https://github.com/Benbi78/Archeolobot
+Lien du GitHub: https://github.com/Benbi78/Archeolobot
 
-commandes:
+Commandes:
 
 /excavate	    Commencez une fouille archéologique
 /collection	    Affiche les artefacts découverts
